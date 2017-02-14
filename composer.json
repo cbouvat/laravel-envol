@@ -1,0 +1,26 @@
+{
+    "name": "cbouvat/laravel-envol",
+    "description": "Package for deploy your app via webhook Github, Bitbucket, ...",
+    "keywords": ["laravel", "git", "deploy", "github", "webhook"],
+    "homepage": "https://github.com/cbouvat/laravel-envol",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/cbouvat/laravel-envol/issues",
+        "source": "https://github.com/cbouvat/laravel-envol"
+    },
+    "require": {
+        "illuminate/support": "5.2.*|5.3.*|5.4.*"
+    },
+    "authors": [
+        {
+            "name": "Camille Bouvat",
+            "email": "cbouvat@sheep5.com",
+            "homepage": "https://sheep5.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Cbouvat\\Envol\\": "src/"
+        }
+    }
+}
