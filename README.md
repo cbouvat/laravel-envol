@@ -1,6 +1,6 @@
 # Laravel Envol BETA
 
-Laravel 5.2+ deploy with webhook Github and Bitbucket.
+Automatic deployment Laravel 5.2+ package with webhook Github and Bitbucket.
 
 ## Installation
 

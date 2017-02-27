@@ -22,6 +22,9 @@ class EnvolController extends Controller
                 ->json(['error' => 'This key is not allowed'], 403);
         }
 
+        // Log
+        $log = '';
+
         // Maintenance mode (down)
         try {
             $exitCode = Artisan::call('down');
@@ -30,36 +33,36 @@ class EnvolController extends Controller
         }
 
         // App base directory
-        $appPath = base_path();
+        $appPath = base_path() . '/';
 
         // Git Reset hard
-        $message = shell_exec(escapeshellcmd('git reset --hard --work-tree=' . $appPath));
+        $log .= shell_exec('git --git-dir=' . $appPath . '.git --work-tree=' . $appPath . ' reset --hard');
 
         // Git pull
-        $message = shell_exec(escapeshellcmd('git pull '. config('envol.remote') .' '. config('envol.branch') .' --work-tree=' . $appPath));
+        $log .= shell_exec('git --git-dir=' . $appPath . '.git --work-tree=' . $appPath . ' pull '. config('envol.remote') .' '. config('envol.branch'));
 
         // Composer
-        $message = shell_exec(escapeshellcmd('composer install --no-suggest --no-dev --working-dir "' . $appPath . '"'));
+        $log .= shell_exec('composer install --no-suggest --no-dev --working-dir "' . $appPath . '"');
 
         // Cache clear
         try {
             $exitCode = Artisan::call('cache:clear');
         } catch (Exception $e) {
-            //
+            $log .= $exitCode;
         }
 
         // Config cache
         try {
             $exitCode = Artisan::call('config:cache');
         } catch (Exception $e) {
-            //
+            $log .= $exitCode;
         }
 
         // Route caching
         try {
             $exitCode = Artisan::call('route:cache');
         } catch (Exception $e) {
-            //
+            $log .= $exitCode;
         }
 
         // Migration
@@ -68,19 +71,20 @@ class EnvolController extends Controller
                 '--force' => true,
             ]);
         } catch (Exception $e) {
-            //
+            $log .= $exitCode;
         }
 
         // Maintenance up
         try {
             $exitCode = Artisan::call('up');
         } catch (Exception $e) {
-            //
+            $log .= $exitCode;
         }
 
         // If notification mail if define
         if (!empty(config('envol.mail'))) {
             $textMail = 'App deploy success';
+            $textMail .= $log;
 
             // Send mail
             Mail::raw($textMail, function ($message) {

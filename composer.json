@@ -1,6 +1,6 @@
 {
     "name": "cbouvat/laravel-envol",
-    "description": "Package for deploy your app via webhook Github, Bitbucket, ...",
+    "description": "Automatic deployment Laravel 5.2+ package with webhook Github and Bitbucket",
     "keywords": ["laravel", "git", "deploy", "github", "webhook"],
     "homepage": "https://github.com/cbouvat/laravel-envol",
     "license": "MIT",
